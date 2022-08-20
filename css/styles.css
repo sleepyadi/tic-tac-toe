@@ -1,0 +1,16 @@
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 1px solid red;
+}
+
+:root {
+    font-size: 100%;
+}
+
+body {
+    min-height: 100vh;
+}
