@@ -30,8 +30,13 @@ const gameboard = (function() {
         const isTTTBox = event.target.getAttribute('class').includes('ttt-box');
 
         if (isDiv && isTTTBox) {
-            placeMarker(event.target);
+            let markerPlaced = placeMarker(event.target);
+            if (markerPlaced) {
+                emulateP2('player');
+                checkWinner();
+            }
             // what if placeMarker doesnt place it if its occupied but emulatep2 does place thinking we placed??
+            // could make a BOT vs BOT as well if both p1 p2 are made via emulated option
 
         }
     }
@@ -43,19 +48,53 @@ const gameboard = (function() {
 
         if (isArr) {
             let pos = Number(val[0]);
-            gboardDOM[pos].textContent = (gboardDOM[pos].textContent === '') ? val[1] : gboardDOM[pos].textContent;
-            return;
+            if (gboardDOM[pos].textContent === '') {
+                gboardDOM[pos].textContent = lastMarker;
+                return true;
+            }
         }
 
         if (isNodeObject) {
-            val.textContent = (val.textContent === '') ? lastMarker : val.textContent;
-            console.log(val.textContent)
-            return;
+            if (val.textContent === '') {
+                val.textContent = lastMarker;
+                return true;
+            }
         }
 
+        return false;
 
     }
 
+    function emulateP2(type) {
+
+        if (type === 'player') {
+            if (lastMarker === opponentMarker) {
+                lastMarker = playerMarker
+            } else {
+                lastMarker = opponentMarker;
+            }
+        }
+    }
+
+    function checkWinner() {
+        let tempGboard = gboardDOM.map((item) => {return item.textContent});
+        const combinations = [tempGboard.slice(0,3), tempGboard.slice(3,6), tempGboard.slice(6,9),
+                             [tempGboard[0],tempGboard[4],tempGboard[8]],
+                             [tempGboard[2],tempGboard[4],tempGboard[6]],
+                             [tempGboard[0],tempGboard[3],tempGboard[6]],
+                             [tempGboard[1],tempGboard[4],tempGboard[7]],
+                             [tempGboard[2],tempGboard[5],tempGboard[8]]];
+
+        for (let arr of combinations) {
+            let w = arr.join('');
+            if (w === "XXX" || w === 'OOO') {
+                // returns winner as 1 and 2 for player  1 and 2 respectively
+                let winner = (arr[0] === playerMarker) ? 1 : 2;
+                console.log(winner);
+                return winner;
+            }
+        }
+    }
 
     return {init, placeMarker};
 
