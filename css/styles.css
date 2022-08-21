@@ -9,6 +9,7 @@
 
 :root {
     font-size: 100%;
+    font-family: sans-serif;
 }
 
 body {
@@ -35,6 +36,18 @@ main {
 .ttt-container {
     width: 400px;
     height: 400px;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.ttt-box {
+    text-align: center;
+    font-size: 4.2rem;
+    font-weight: bold;
+    padding-top: calc(calc(100% - 4.3rem)/2);
 }
 
 
