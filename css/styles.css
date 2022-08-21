@@ -13,4 +13,35 @@
 
 body {
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
+
+/* ------------------ HEADER --------------------- */
+.header {
+    text-align: center;
+}
+
+/* ------------------ MAIN --------------------- */
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+.ttt-container {
+    width: 400px;
+    height: 400px;
+}
+
+
+
+/* ------------------ FOOTER --------------------- */
+
+.footer {
+    margin-top: auto;   
+}
+
