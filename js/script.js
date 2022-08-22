@@ -1,15 +1,15 @@
 const gameboard = (function() {
     let gboardDOM = [];
-    let playerMarker = '';
-    let opponentMarker = '';
+    let player = '';
+    let opponent = '';
     let lastMarker = '';
     const container = document.querySelector('.ttt-container');
 
     container.addEventListener('click', handleClick);
 
     function init(player1, player2) {
-        playerMarker = player1.marker;
-        opponentMarker = player2.marker;
+        player = player1;
+        opponent = player2;
         lastMarker = player1.marker;
         _setupBoard();
     }
@@ -32,12 +32,11 @@ const gameboard = (function() {
         if (isDiv && isTTTBox) {
             let markerPlaced = placeMarker(event.target);
             if (markerPlaced) {
-                emulateP2('easybot');
+                emulateP2(opponent.type);
                 checkWinner();
             }
             // what if placeMarker doesnt place it if its occupied but emulatep2 does place thinking we placed??
             // could make a BOT vs BOT as well if both p1 p2 are made via emulated option
-
         }
     }
 
@@ -68,13 +67,13 @@ const gameboard = (function() {
     function emulateP2(type) {
 
         if (type === 'player') {
-            if (lastMarker === opponentMarker) {
-                lastMarker = playerMarker
+            if (lastMarker === opponent.marker) {
+                lastMarker = player.marker
             } else {
-                lastMarker = opponentMarker;
+                lastMarker = opponent.marker;
             }
         } else if (type === 'easybot') {
-            easyBot(3000);
+            easyBot(2000);
         }
     }
 
@@ -91,7 +90,7 @@ const gameboard = (function() {
             let w = arr.join('');
             if (w === "XXX" || w === 'OOO') {
                 // returns winner as 1 and 2 for player  1 and 2 respectively
-                let winner = (arr[0] === playerMarker) ? 1 : 2;
+                let winner = (arr[0] === player.marker) ? 1 : 2;
                 console.log(winner);
                 return winner;
             }
@@ -124,15 +123,92 @@ const gameboard = (function() {
         if (availableSpots.length >= 1) {
             let randomPos = availableSpots[random(availableSpots.length)];
             disableInputs();
-            setTimeout(placeMarker, delay, [randomPos, opponentMarker]);
+            setTimeout(placeMarker, delay, [randomPos, opponent.marker]);
             setTimeout(enableInputs, delay);
+            setTimeout(checkWinner, delay);
         }
         
-
     }
 
     return {init, placeMarker};
 
 })();
 
-gameboard.init({marker: 'X'}, {marker:'O'})
+gameboard.init({marker: 'X'}, {marker:'O',type:'easybot'});
+
+const createPlayer = (name, marker, type='player') => {
+
+    return {name, marker, type};
+};
+
+const modals = (function() {
+    let openModalBtn = document.querySelectorAll('[data-target-modal]');
+    let closeModalBtn = document.querySelectorAll('[data-close-modal]');
+
+    openModalBtn.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const modalID = btn.getAttribute('data-target-modal');
+            const modal = document.querySelector(modalID);
+            openModal(modal);
+        });
+    })
+    closeModalBtn.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const modalID = btn.getAttribute('data-close-modal');
+            const modal = document.querySelector(modalID);
+            closeModal(modal);
+        });
+    });
+
+
+    function openModal(modal) {
+        modal.classList.add('active'); 
+    }
+
+    function closeModal(modal) {
+        modal.classList.remove('active')
+    } 
+
+    function refreshModals() {
+        openModalBtn = document.querySelectorAll('[data-target-modal]');
+        closeModalBtn = document.querySelectorAll('[data-close-modal]');
+
+        openModalBtn.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                const modalID = btn.getAttribute('data-target-modal');
+                const modal = document.querySelector(modalID);
+                openModal(modal);
+            });
+        })
+        closeModalBtn.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                const modalID = btn.getAttribute('data-close-modal');
+                const modal = document.querySelector(modalID);
+                closeModal(modal);
+            });
+        });
+
+    }
+
+    return {refreshModals, openModal, closeModal}
+})();
+
+
+// game module that creates and manages game instance
+// initializes players and board via input modal?
+// input for player name and difficulty + start button -> game with  board restart button -> declare winner and full restart?
+
+// play button - opens form
+// form takes input for player names and marker + difficulty
+// on submit form disappear and gameboard appears
+// on win/lose trigger win event and clear board ?
+const game = (function() {
+
+    const main = document.querySelector('main');
+    const playerDetails = ''; // player form
+
+    function init() {
+
+    }
+
+})();

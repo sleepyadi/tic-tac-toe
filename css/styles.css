@@ -66,3 +66,18 @@ main {
     margin-top: auto;   
 }
 
+/* ------------------ MODAL --------------------- */
+
+.modal {
+    width: max-content;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: 250ms ease-in-out;
+    z-index: 10;
+}
+
+.modal.active {
+    transform: translate(-50%, -50%) scale(1);
+}
