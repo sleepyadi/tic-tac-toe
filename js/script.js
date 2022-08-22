@@ -32,7 +32,7 @@ const gameboard = (function() {
         if (isDiv && isTTTBox) {
             let markerPlaced = placeMarker(event.target);
             if (markerPlaced) {
-                emulateP2('player');
+                emulateP2('easybot');
                 checkWinner();
             }
             // what if placeMarker doesnt place it if its occupied but emulatep2 does place thinking we placed??
@@ -49,7 +49,7 @@ const gameboard = (function() {
         if (isArr) {
             let pos = Number(val[0]);
             if (gboardDOM[pos].textContent === '') {
-                gboardDOM[pos].textContent = lastMarker;
+                gboardDOM[pos].textContent = val[1];
                 return true;
             }
         }
@@ -73,6 +73,8 @@ const gameboard = (function() {
             } else {
                 lastMarker = opponentMarker;
             }
+        } else if (type === 'easybot') {
+            easyBot(3000);
         }
     }
 
@@ -94,6 +96,39 @@ const gameboard = (function() {
                 return winner;
             }
         }
+    }
+
+    function disableInputs() {
+        container.classList.add('not-allowed');
+        gboardDOM.forEach((gbox) => {gbox.classList.add('no-pointer-events')});
+    }
+
+    function enableInputs() {
+        container.classList.remove('not-allowed');
+        gboardDOM.forEach((gbox) => {gbox.classList.remove('no-pointer-events')})
+    }
+
+    function random(n) {
+        return Math.floor(Math.random() * n);
+    }
+
+    function easyBot(delay) {
+        let availableSpots = [];
+
+        for (let i = 0; i < 9; i++) {
+            if (gboardDOM[i].textContent === '') {
+                availableSpots.push(i);
+            }
+        }
+
+        if (availableSpots.length >= 1) {
+            let randomPos = availableSpots[random(availableSpots.length)];
+            disableInputs();
+            setTimeout(placeMarker, delay, [randomPos, opponentMarker]);
+            setTimeout(enableInputs, delay);
+        }
+        
+
     }
 
     return {init, placeMarker};

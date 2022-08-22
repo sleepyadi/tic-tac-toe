@@ -18,6 +18,14 @@ body {
     flex-direction: column;
 }
 
+.not-allowed {
+    cursor: not-allowed;
+}
+
+.no-pointer-events {
+    pointer-events: none;
+}
+
 /* ------------------ HEADER --------------------- */
 .header {
     text-align: center;
