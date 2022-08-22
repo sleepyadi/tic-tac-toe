@@ -3,11 +3,14 @@ const gameboard = (function() {
     let player = '';
     let opponent = '';
     let lastMarker = '';
-    const container = document.querySelector('.ttt-container');
+    const main = document.querySelector('main');
+    const container = document.createElement('div');
+    container.classList.add('ttt-container');
 
     container.addEventListener('click', handleClick);
 
     function init(player1, player2) {
+        main.appendChild(container);
         player = player1;
         opponent = player2;
         lastMarker = player1.marker;
@@ -205,9 +208,14 @@ const modals = (function() {
 const game = (function() {
 
     const main = document.querySelector('main');
-    const playerDetails = ''; // player form
+    const playerDetails = document.querySelector('#player-data');
+    playerDetails.addEventListener('submit', gameStart);
 
     function init() {
+
+    }
+
+    function gameStart() {
 
     }
 
