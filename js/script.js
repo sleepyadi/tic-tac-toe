@@ -113,7 +113,6 @@ const gameboard = (function() {
                 emulateP2(opponent.type);
                 checkWinner();
             }
-            // what if placeMarker doesnt place it if its occupied but emulatep2 does place thinking we placed??
             // could make a BOT vs BOT as well if both p1 p2 are made via emulated option
         }
     }
