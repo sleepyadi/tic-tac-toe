@@ -1,18 +1,75 @@
+
+const modals = (function() {
+    let openModalBtn = document.querySelectorAll('[data-target-modal]');
+    let closeModalBtn = document.querySelectorAll('[data-close-modal]');
+
+    openModalBtn.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const modalID = btn.getAttribute('data-target-modal');
+            const modal = document.querySelector(modalID);
+            openModal(modal);
+        });
+    })
+    closeModalBtn.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const modalID = btn.getAttribute('data-close-modal');
+            const modal = document.querySelector(modalID);
+            closeModal(modal);
+        });
+    });
+
+
+    function openModal(modal) {
+        modal.classList.add('active'); 
+    }
+
+    function closeModal(modal) {
+        modal.classList.remove('active')
+    } 
+
+    function refreshModals() {
+        openModalBtn = document.querySelectorAll('[data-target-modal]');
+        closeModalBtn = document.querySelectorAll('[data-close-modal]');
+
+        openModalBtn.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                const modalID = btn.getAttribute('data-target-modal');
+                const modal = document.querySelector(modalID);
+                openModal(modal);
+            });
+        })
+        closeModalBtn.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                const modalID = btn.getAttribute('data-close-modal');
+                const modal = document.querySelector(modalID);
+                closeModal(modal);
+            });
+        });
+
+    }
+
+    return {refreshModals, openModal, closeModal}
+})();
+
+
 const gameboard = (function() {
     let gboardDOM = [];
     let player = '';
     let opponent = '';
     let lastMarker = '';
     const main = document.querySelector('main');
+    const resultModal = document.querySelector('#modal-game-over')
+
     const clearBoardBtn = document.createElement('button');
     clearBoardBtn.textContent = 'Clear Board';
     clearBoardBtn.classList.add('btn');
     clearBoardBtn.classList.add('btn-red');
     clearBoardBtn.classList.add('btn-clear');
-    clearBoardBtn.addEventListener('click', clearBoard)
+
     const container = document.createElement('div');
     container.classList.add('ttt-container');
 
+    clearBoardBtn.addEventListener('click', clearBoard)
     container.addEventListener('click', handleClick);
 
     function init(player1, player2) {
@@ -27,6 +84,7 @@ const gameboard = (function() {
 
     function _setupBoard() {
         gboardDOM = [];
+        container.innerHTML = '';
 
         for (let i = 0; i < 9; i++) {
             const div = document.createElement('div');
@@ -108,10 +166,17 @@ const gameboard = (function() {
             if (w === "XXX" || w === 'OOO') {
                 // returns winner as 1 and 2 for player  1 and 2 respectively
                 let winner = (arr[0] === player.marker) ? 1 : 2;
-                console.log(winner);
-                return winner;
+                showWinner(w);
             }
         }
+    }
+
+    function showWinner(w) {
+        let winner = (w === 1) ? player : opponent;
+        const resultDiv = resultModal.querySelector('.game-over-msg');
+        resultDiv.textContent = `The winner is ${winner.name} with the marker ${winner.marker}`;
+        modals.openModal(resultModal);
+
     }
 
     function disableInputs() {
@@ -157,72 +222,16 @@ const createPlayer = (name, marker, type='player') => {
     return {name, marker, type};
 };
 
-const modals = (function() {
-    let openModalBtn = document.querySelectorAll('[data-target-modal]');
-    let closeModalBtn = document.querySelectorAll('[data-close-modal]');
 
-    openModalBtn.forEach((btn) => {
-        btn.addEventListener('click', () => {
-            const modalID = btn.getAttribute('data-target-modal');
-            const modal = document.querySelector(modalID);
-            openModal(modal);
-        });
-    })
-    closeModalBtn.forEach((btn) => {
-        btn.addEventListener('click', () => {
-            const modalID = btn.getAttribute('data-close-modal');
-            const modal = document.querySelector(modalID);
-            closeModal(modal);
-        });
-    });
-
-
-    function openModal(modal) {
-        modal.classList.add('active'); 
-    }
-
-    function closeModal(modal) {
-        modal.classList.remove('active')
-    } 
-
-    function refreshModals() {
-        openModalBtn = document.querySelectorAll('[data-target-modal]');
-        closeModalBtn = document.querySelectorAll('[data-close-modal]');
-
-        openModalBtn.forEach((btn) => {
-            btn.addEventListener('click', () => {
-                const modalID = btn.getAttribute('data-target-modal');
-                const modal = document.querySelector(modalID);
-                openModal(modal);
-            });
-        })
-        closeModalBtn.forEach((btn) => {
-            btn.addEventListener('click', () => {
-                const modalID = btn.getAttribute('data-close-modal');
-                const modal = document.querySelector(modalID);
-                closeModal(modal);
-            });
-        });
-
-    }
-
-    return {refreshModals, openModal, closeModal}
-})();
-
-
-// game module that creates and manages game instance
-// initializes players and board via input modal?
-// input for player name and difficulty + start button -> game with  board restart button -> declare winner and full restart?
-
-// play button - opens form
-// form takes input for player names and marker + difficulty
-// on submit form disappear and gameboard appears
-// on win/lose trigger win event and clear board ?
 const game = (function() {
 
     const main = document.querySelector('main');
     const playerDetails = document.querySelector('#form-player-data');
+    const resultModal = document.querySelector('#modal-game-over')
+    const restartBtn = document.querySelector('.btn-restart-game');
+
     playerDetails.addEventListener('submit', gameStart);
+    restartBtn.addEventListener('click', gameOver);
 
     function init() {
         main.innerHTML = '';
@@ -244,6 +253,11 @@ const game = (function() {
         gameboard.init(p1, p2);
     }
 
+    function gameOver() {
+        modals.closeModal(resultModal);
+        init();
+    }
+
     function parseFormData(form) {
         const p1name = form.elements['player1-name'].value;
         const p1marker = form.elements['marker'].value;
@@ -252,7 +266,16 @@ const game = (function() {
         const p2type = form.elements['difficulty'].value;
         const p1 = createPlayer(p1name, p1marker, 'player');
         const p2 = createPlayer(p2name, p2marker, p2type);
+        clearForm(form);
         return [p1, p2];
+    }
+
+    function clearForm(form) {
+        for (let elem in form.elements) {
+            if (elem.includes('-name')) {
+                form.elements[elem].value = '';
+            }
+        }
     }
 
     return {init}
