@@ -2,6 +2,7 @@
 const modals = (function() {
     let openModalBtn = document.querySelectorAll('[data-target-modal]');
     let closeModalBtn = document.querySelectorAll('[data-close-modal]');
+    const overlay = document.querySelector('#overlay')
 
     openModalBtn.forEach((btn) => {
         btn.addEventListener('click', () => {
@@ -20,11 +21,13 @@ const modals = (function() {
 
 
     function openModal(modal) {
-        modal.classList.add('active'); 
+        modal.classList.add('active');
+        overlay.classList.add('active');
     }
 
     function closeModal(modal) {
-        modal.classList.remove('active')
+        modal.classList.remove('active');
+        overlay.classList.remove('active');
     } 
 
     function refreshModals() {
@@ -246,6 +249,7 @@ const game = (function() {
         const startGameBtn = document.createElement('button');
         startGameBtn.textContent = 'Start Game';
         startGameBtn.classList.add('btn');
+        startGameBtn.classList.add('btn-start')
         startGameBtn.setAttribute('data-target-modal','#modal-player-data');
         main.appendChild(startGameBtn);
         modals.refreshModals();

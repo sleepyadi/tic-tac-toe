@@ -4,15 +4,19 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    border: 1px solid red;
+    /* border: 1px solid red; */
 }
 
 :root {
     font-size: 100%;
     font-family: sans-serif;
+    --bg-main: #FDF6EC;
+    --bg-black: #100720;
+    --fnt-gold: #FFC23C;
 }
 
 body {
+    background-color: var(--bg-main);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -27,6 +31,7 @@ body {
 }
 
 .btn {
+    border-radius: 8px;
     border: none;
     box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
     font-weight: bold;
@@ -52,17 +57,29 @@ body {
 
 /* ------------------ HEADER --------------------- */
 .header {
+    background-color: var(--bg-black);
+    color: var(--fnt-gold);
+    opacity: 0.85;
+    text-shadow: 1px 1px 3px white;
     text-align: center;
+    box-shadow: 0px 5px 5px rgba(0,0,0,0.5);
 }
 
 /* ------------------ MAIN --------------------- */
 
 main {
     display: flex;
+    flex: 1;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: auto;
+}
+
+.btn-start {
+    text-shadow: 1px 1px 8px white;
+    background-color: var(--bg-black);
+    color: var(--fnt-gold);
+    font-size: 1.6rem;
 }
 
 .btn-clear {
@@ -80,6 +97,10 @@ main {
 }
 
 .ttt-box {
+    background-color: rgba(0,0,0,0.7);
+    box-shadow: 3px 3px 5px #888888;
+    border-radius: 6px;
+    color: var(--fnt-gold);
     text-align: center;
     font-size: 4.2rem;
     font-weight: bold;
@@ -91,14 +112,25 @@ main {
 /* ------------------ FOOTER --------------------- */
 
 .footer {
-    margin-top: auto;   
+    text-align: center;
+    margin-top: auto;
+    padding: 0.5em;
 }
 
+.footer__link {
+    font-weight: bold;
+    color: var(--fnt-gold);
+    text-decoration: none;
+    text-shadow: 1px 1px 3px gray;
+}
 /* ------------------ MODAL --------------------- */
 
 .modal {
-    background-color: white;
-    padding: 1em;
+    border: 1px solid var(--fnt-gold);
+    color: var(--fnt-gold);
+    border-radius: 8px;
+    background-color: rgba(0,0,0,0.8);
+    padding: 1.5em;
     width: max-content;
     position: fixed;
     top: 50%;
@@ -112,6 +144,40 @@ main {
     transform: translate(-50%, -50%) scale(1);
 }
 
+#modal-game-over {
+    width: 400px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.game-over-msg {
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+
+
+/* ------------------ Overlay --------------------- */
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    transition: ease-in-out 200ms;
+    pointer-events: none;
+    background-color: rgba(0,0,0,0.5);
+}
+
+#overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+
 /* ------------------ FORM --------------------- */
 
 #form-player-data {
@@ -123,6 +189,17 @@ main {
 #form-player-data h2 {
     text-align: center;
 }
+
+#form-player-data section {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+#form-player-data section > *:first-child {
+    font-weight: bold;
+}
+
 
 #form-player-data + div {
     margin-top: 1rem;
