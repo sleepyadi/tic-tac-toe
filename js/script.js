@@ -4,6 +4,12 @@ const gameboard = (function() {
     let opponent = '';
     let lastMarker = '';
     const main = document.querySelector('main');
+    const clearBoardBtn = document.createElement('button');
+    clearBoardBtn.textContent = 'Clear Board';
+    clearBoardBtn.classList.add('btn');
+    clearBoardBtn.classList.add('btn-red');
+    clearBoardBtn.classList.add('btn-clear');
+    clearBoardBtn.addEventListener('click', clearBoard)
     const container = document.createElement('div');
     container.classList.add('ttt-container');
 
@@ -11,6 +17,7 @@ const gameboard = (function() {
 
     function init(player1, player2) {
         main.innerHTML = '';
+        main.appendChild(clearBoardBtn);
         main.appendChild(container);
         player = player1;
         opponent = player2;
@@ -26,6 +33,12 @@ const gameboard = (function() {
             div.classList.add('ttt-box');
             gboardDOM.push(div);
             container.appendChild(div);
+        }
+    }
+
+    function clearBoard() {
+        if (gboardDOM.length >= 1) {
+            gboardDOM.forEach((gbox) => {gbox.textContent = ''});
         }
     }
 
