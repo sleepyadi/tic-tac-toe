@@ -10,6 +10,7 @@ const gameboard = (function() {
     container.addEventListener('click', handleClick);
 
     function init(player1, player2) {
+        main.innerHTML = '';
         main.appendChild(container);
         player = player1;
         opponent = player2;
@@ -137,7 +138,6 @@ const gameboard = (function() {
 
 })();
 
-gameboard.init({marker: 'X'}, {marker:'O',type:'easybot'});
 
 const createPlayer = (name, marker, type='player') => {
 
@@ -208,15 +208,41 @@ const modals = (function() {
 const game = (function() {
 
     const main = document.querySelector('main');
-    const playerDetails = document.querySelector('#player-data');
+    const playerDetails = document.querySelector('#form-player-data');
     playerDetails.addEventListener('submit', gameStart);
 
     function init() {
-
+        main.innerHTML = '';
+        const startGameBtn = document.createElement('button');
+        startGameBtn.textContent = 'Start Game';
+        startGameBtn.classList.add('btn');
+        startGameBtn.setAttribute('data-target-modal','#modal-player-data');
+        main.appendChild(startGameBtn);
+        modals.refreshModals();
     }
 
-    function gameStart() {
-
+    function gameStart(e) {
+        // prevent form submit
+        e.preventDefault();
+        const players = parseFormData(playerDetails);
+        const p1 = players[0];
+        const p2 = players[1];
+        modals.closeModal(playerDetails.parentNode);
+        gameboard.init(p1, p2);
     }
 
+    function parseFormData(form) {
+        const p1name = form.elements['player1-name'].value;
+        const p1marker = form.elements['marker'].value;
+        const p2name = form.elements['player2-name'].value;
+        const p2marker = (p1marker === 'X') ? 'O': 'X';
+        const p2type = form.elements['difficulty'].value;
+        const p1 = createPlayer(p1name, p1marker, 'player');
+        const p2 = createPlayer(p2name, p2marker, p2type);
+        return [p1, p2];
+    }
+
+    return {init}
 })();
+
+game.init();

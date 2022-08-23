@@ -27,7 +27,49 @@
     </footer>
 
     <div class="modal" id="modal-player-data">
-        <form action="" id="player-data"></form>
+        <form action="" id="form-player-data">
+
+            <h2>Player 1</h2>
+            <section>
+                <label for="player1-name">Name:<abbr title="required" aria-label="required">*</abbr></label>
+                <input type="text" id="player1-name" name="player1-name" required>
+            </section>
+
+            <section>
+                <p>Marker:</p>
+
+                <input type="radio" name="marker" id="marker-x" value="X" checked>
+                <label for="marker-x">X</label>
+
+                <input type="radio" name="marker" id="marker-o" value="O">
+                <label for="marker-0">O</label>
+
+            </section>
+
+            <h2>Player 2</h2>
+            <section>
+                <label for="player2-name">Name:<abbr title="required" aria-label="required">*</abbr></label>
+                <input type="text" id="player2-name" name="player2-name" required>
+            </section>
+
+            <section>
+                <p>Difficulty:</p>
+
+                <input type="radio" name="difficulty" id="diff-player" value="player" checked>
+                <label for="diff-player">Player</label>
+
+                <input type="radio" name="difficulty" id="diff-easy" value="easybot">
+                <label for="diff-easy">Easy</label>
+
+            </section>
+
+            <button class="btn btn-red" type="submit">Start Game</button>
+
+            
+        </form>
+        <div>
+            <button data-close-modal="#modal-player-data" class="btn btn-close-modal btn-green">Close</button>
+        </div>
     </div>
 </body>
 </html>
