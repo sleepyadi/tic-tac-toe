@@ -169,12 +169,20 @@ const gameboard = (function() {
                 showWinner(w);
             }
         }
+
+        let availableSpots = gboardDOM.filter((item) => {return item.textContent === ''});
+        if (availableSpots.length === 0) {
+            showWinner(3);
+        }
     }
 
     function showWinner(w) {
         let winner = (w === 1) ? player : opponent;
+        let winMsg = `The winner is ${winner.name}!, with the marker ${winner.marker}`;
+        let drawMsg = 'Its a draw!'
+        
         const resultDiv = resultModal.querySelector('.game-over-msg');
-        resultDiv.textContent = `The winner is ${winner.name} with the marker ${winner.marker}`;
+        resultDiv.textContent = (w === 3) ? drawMsg : winMsg;
         modals.openModal(resultModal);
 
     }
