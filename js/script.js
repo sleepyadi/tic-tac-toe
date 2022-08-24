@@ -83,6 +83,7 @@ const gameboard = (function() {
         opponent = player2;
         lastMarker = player1.marker;
         _setupBoard();
+        setupMarkerBoard();
     }
 
     function _setupBoard() {
@@ -101,6 +102,22 @@ const gameboard = (function() {
         if (gboardDOM.length >= 1) {
             gboardDOM.forEach((gbox) => {gbox.textContent = ''});
         }
+    }
+
+    function setupMarkerBoard() {
+        const div = document.createElement('div')
+        div.classList.add('markers');
+
+        const playerM = document.createElement('div');
+        playerM.classList.add('player-marker');
+        playerM.textContent = `${player.name}: ${player.marker}`
+
+        const opponentM = document.createElement('div');
+        opponentM.classList.add('opponent-marker');
+        opponentM.textContent = `${opponent.name}: ${opponent.marker}`
+        div.appendChild(playerM);
+        div.appendChild(opponentM);
+        main.appendChild(div);
     }
 
     function handleClick(event) {
