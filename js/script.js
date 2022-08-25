@@ -84,6 +84,7 @@ const gameboard = (function() {
         lastMarker = player1.marker;
         _setupBoard();
         setupMarkerBoard();
+        changeHighlight();
     }
 
     function _setupBoard() {
@@ -102,6 +103,8 @@ const gameboard = (function() {
         if (gboardDOM.length >= 1) {
             gboardDOM.forEach((gbox) => {gbox.textContent = ''});
         }
+        lastMarker = player.marker;
+        changeHighlight();
     }
 
     function setupMarkerBoard() {
@@ -118,6 +121,21 @@ const gameboard = (function() {
         div.appendChild(playerM);
         div.appendChild(opponentM);
         main.appendChild(div);
+    }
+
+    function changeHighlight() {
+        const p1 = document.querySelector('.player-marker');
+        const p2 = document.querySelector('.opponent-marker');
+        const usedSpots = gboardDOM.filter((item) => {return item.textContent !== ''}).length;
+
+        if (usedSpots % 2 === 0) {
+            p1.classList.add('highlight');
+            p2.classList.remove('highlight');
+        } else {
+            p2.classList.add('highlight');
+            p1.classList.remove('highlight');
+        }
+
     }
 
     function handleClick(event) {
@@ -143,6 +161,7 @@ const gameboard = (function() {
             let pos = Number(val[0]);
             if (gboardDOM[pos].textContent === '') {
                 gboardDOM[pos].textContent = val[1];
+                changeHighlight();
                 return true;
             }
         }
@@ -150,6 +169,7 @@ const gameboard = (function() {
         if (isNodeObject) {
             if (val.textContent === '') {
                 val.textContent = lastMarker;
+                changeHighlight();
                 return true;
             }
         }

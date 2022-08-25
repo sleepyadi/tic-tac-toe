@@ -113,7 +113,7 @@ main {
     display: flex;
     flex-direction: row;
     /* width: 400px; */
-    border: 1px solid red;
+    /* border: 1px solid red; */
     gap: 3rem;
 }
 
@@ -127,9 +127,19 @@ main {
     font-size: 1.2rem;
 }
 
-.highlight {
+.opponent-marker.highlight,
+.player-marker.highlight {
+    outline: 2px solid black;
     background-color: var(--fnt-gold);
     color: black;
+    transform: scale(1.05);
+    box-shadow: 5px 5px 8px var(--fnt-gold), -5px -5px 8px var(--fnt-gold);
+}
+
+.opponent-marker.highlight::before,
+.player-marker.highlight::before {
+    content: '➜ ';
+    font-weight: bold;
 }
 
 
