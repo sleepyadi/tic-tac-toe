@@ -16,3 +16,4 @@ Simple tic tac toe game made mostly using module pattern(with IIFE) and factory 
 ## TODO:
 - add a way to highlight current player
 - possibly make it look a tiny bit better (when i learn some animations.)
+- add a hard difficulty using minimax (when i understand minimax )
