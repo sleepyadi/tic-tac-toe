@@ -14,6 +14,6 @@ Simple tic tac toe game made mostly using module pattern(with IIFE) and factory 
 - has option to choose vs player or vs easy bot (the easy bot just chooses a random spot from available spot :p)
 
 ## TODO:
-- add a way to highlight current player
+- ~~add a way to highlight current player~~
 - possibly make it look a tiny bit better (when i learn some animations.)
 - add a hard difficulty using minimax (when i understand minimax )
